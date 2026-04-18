@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Site Seeking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00E5FF',     /* accent-teal */
+                        dark: '#010A1C',        /* bg-main */
+                        darkPanel: '#000511'    /* bg-darker */
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 dark:bg-dark text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="absolute top-4 right-4 p-2 rounded-full bg-white dark:bg-darkPanel shadow-lg hover:ring-2 ring-primary transition-all">
+        <i class="fas fa-moon dark:hidden"></i>
+        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+    </button>
+
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-white dark:bg-darkPanel rounded-2xl shadow-2xl p-8 transform transition-all hover:scale-[1.01]">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-shield-alt text-3xl text-primary"></i>
+                </div>
+                <h1 class="text-2xl font-bold">Admin Portal</h1>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Sign in to access the control panel</p>
+            </div>
+            
+            <form id="admin-login-form" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Username or Email</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <input type="text" id="admin-username" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-dark focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                            placeholder="admin@siteseeking.com">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" id="admin-password" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-dark focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" class="rounded text-primary focus:ring-primary bg-gray-50 dark:bg-dark border-gray-300 dark:border-gray-600">
+                        <span class="ml-2">Remember me</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-primary hover:bg-indigo-700 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 transition-all active:scale-95 flex justify-center items-center gap-2">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 transform translate-y-full opacity-0 transition-all duration-300 bg-white dark:bg-darkPanel shadow-2xl rounded-xl p-4 flex items-center gap-3 z-50">
+        <div id="toast-icon" class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"></div>
+        <p id="toast-message" class="text-sm font-medium"></p>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // Init theme
+        if (localStorage.getItem('admin-theme') === 'dark' || (!localStorage.getItem('admin-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('admin-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Form Login
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Authenticating...';
+            btn.disabled = true;
+
+            const user = document.getElementById('admin-username').value;
+            const pass = document.getElementById('admin-password').value;
+
+            try {
+                // Using mock API from api.js
+                const res = await AdminAPI.login(user, pass);
+                if (res.success) {
+                    showToast('success', 'Authentication successful. Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    throw new Error('Invalid credentials');
+                }
+            } catch (err) {
+                showToast('error', err.message);
+                btn.innerHTML = '<span>Sign In</span><i class="fas fa-arrow-right"></i>';
+                btn.disabled = false;
+            }
+        });
+
+        function showToast(type, message) {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toast-icon');
+            const msg = document.getElementById('toast-message');
+
+            toast.classList.remove('translate-y-full', 'opacity-0');
+            msg.textContent = message;
+
+            if (type === 'success') {
+                icon.className = 'w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400';
+                icon.innerHTML = '<i class="fas fa-check"></i>';
+            } else {
+                icon.className = 'w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400';
+                icon.innerHTML = '<i class="fas fa-exclamation"></i>';
+            }
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+    <script src="../animations.js" defer></script>
+</body>
+</html>

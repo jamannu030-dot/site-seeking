@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00E5FF',     /* accent-teal */
+                        dark: '#010A1C',        /* bg-main */
+                        darkPanel: '#000511'    /* bg-darker */
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-dark dark:bg-dark text-white dark:text-gray-200 flex h-screen overflow-hidden transition-colors duration-300">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel shadow-2xl flex flex-col z-20 shrink-0">
+        <div class="h-16 flex items-center px-6 border-b border-gray-100 dark:border-gray-800 justify-between">
+            <div class="flex items-center gap-3 sidebar-text text-xl font-bold text-primary">
+                <i class="fas fa-layer-group"></i>
+                <span>Site Admin</span>
+            </div>
+            <button id="toggle-sidebar" class="text-gray-400 hover:text-primary transition-colors">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+            <a href="#" data-target="dashboard-view" class="nav-item flex items-center gap-3 px-3 py-3 rounded-lg text-gray-500 hover:text-primary hover:bg-primary/5 transition-all w-full">
+                <i class="fas fa-home w-5 text-center"></i>
+                <span class="sidebar-text font-medium">Dashboard</span>
+            </a>
+            <a href="#" data-target="users-view" class="nav-item flex items-center gap-3 px-3 py-3 rounded-lg text-gray-500 hover:text-primary hover:bg-primary/5 transition-all w-full">
+                <i class="fas fa-users w-5 text-center"></i>
+                <span class="sidebar-text font-medium">Users Management</span>
+            </a>
+            <a href="#" data-target="activity-view" class="nav-item flex items-center gap-3 px-3 py-3 rounded-lg text-gray-500 hover:text-primary hover:bg-primary/5 transition-all w-full">
+                <i class="fas fa-chart-line w-5 text-center"></i>
+                <span class="sidebar-text font-medium">Activity Logs</span>
+            </a>
+            <a href="#" data-target="content-view" class="nav-item flex items-center gap-3 px-3 py-3 rounded-lg text-gray-500 hover:text-primary hover:bg-primary/5 transition-all w-full">
+                <i class="fas fa-file-alt w-5 text-center"></i>
+                <span class="sidebar-text font-medium">Content Manager</span>
+            </a>
+            <a href="#" data-target="settings-view" class="nav-item flex items-center gap-3 px-3 py-3 rounded-lg text-gray-500 hover:text-primary hover:bg-primary/5 transition-all w-full">
+                <i class="fas fa-cog w-5 text-center"></i>
+                <span class="sidebar-text font-medium">Settings</span>
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t border-gray-100 dark:border-gray-800">
+            <a href="#" id="logout-btn" class="flex items-center gap-3 px-3 py-2 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all w-full">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span class="sidebar-text font-medium">Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main ContentWrapper -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        
+        <!-- Top Navbar -->
+        <header class="h-16 bg-black/20 backdrop-blur-md border border-white/10/80 dark:bg-darkPanel/80 glass sticky top-0 z-10 flex items-center justify-between px-6 shadow-sm">
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-bold hidden sm:block" id="current-page-title">Dashboard Overview</h2>
+            </div>
+            
+            <div class="flex items-center gap-5">
+                <!-- Notifications -->
+                <div class="relative group cursor-pointer">
+                    <i class="fas fa-bell text-gray-500 hover:text-primary text-xl transition-colors"></i>
+                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-white dark:border-darkPanel"></span>
+                    
+                    <div class="absolute right-0 mt-2 w-72 bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-xl shadow-2xl border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform origin-top-right z-50">
+                        <div class="p-3 border-b border-gray-100 dark:border-gray-700">
+                            <h4 class="font-bold">Notifications</h4>
+                        </div>
+                        <div class="max-h-64 overflow-y-auto p-2">
+                            <div class="p-2 hover:bg-dark dark:hover:bg-gray-800 rounded-lg cursor-pointer">
+                                <p class="text-sm font-medium">New user registered</p>
+                                <p class="text-xs text-gray-500 mt-1">2 mins ago</p>
+                            </div>
+                            <div class="p-2 hover:bg-dark dark:hover:bg-gray-800 rounded-lg cursor-pointer">
+                                <p class="text-sm font-medium">System backup completed</p>
+                                <p class="text-xs text-gray-500 mt-1">1 hour ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="text-gray-500 hover:text-primary text-xl transition-colors">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+
+                <!-- Profile Profile -->
+                <div class="flex items-center gap-3 border-l border-gray-200 dark:border-gray-700 pl-5">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=4f46e5&color=fff" alt="Admin" class="w-9 h-9 rounded-full ring-2 ring-primary/30">
+                    <div class="hidden sm:block">
+                        <p class="text-sm font-bold leading-tight">Super Admin</p>
+                        <p class="text-xs text-gray-500">System Owner</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Scrolling Area -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-dark/50 dark:bg-dark p-6">
+            
+            <!-- Dashboard View -->
+            <section id="dashboard-view" class="view-section animate-slide-in-right">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 text-white lg:grid-cols-4 gap-6 mb-8 text-white">
+                    <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500  dark:text-gray-400">Total Users</p>
+                                <h3 class="text-3xl font-bold mt-1 text-white dark:text-gray-200" id="stat-total-users">0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 text-xl">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Active Sessions</p>
+                                <h3 class="text-3xl font-bold mt-1 text-white dark:text-gray-200" id="stat-active-users">0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 dark:bg-green-900/30 dark:text-green-400 text-xl">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Custom Places</p>
+                                <h3 class="text-3xl font-bold mt-1 text-white dark:text-gray-200" id="stat-revenue">0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 text-xl">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total User Saves</p>
+                                <h3 class="text-3xl font-bold mt-1 text-white dark:text-gray-200" id="stat-bounce">0</h3>
+                            </div>
+                            <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400 text-xl">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Analytics Chart -->
+                    <div class="lg:col-span-2 bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                        <h3 class="font-bold mb-4">User Growth Analytics</h3>
+                        <div class="h-80">
+                            <canvas id="visitorChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Mini Activity -->
+                    <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 flex flex-col">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold">Recent Activity</h3>
+                            <button onclick="document.querySelector('[data-target=\'activity-view\']').click()" class="text-sm text-primary hover:underline">View All</button>
+                        </div>
+                        <div class="flex-1 overflow-y-auto space-y-4 pr-2" id="mini-activity-feed">
+                            <!-- Populated dynamically if needed, or static placeholder -->
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 text-xs shrink-0"><i class="fas fa-clock"></i></div>
+                                <div><p class="text-sm">Admin logged in</p><p class="text-xs text-gray-400">Just now</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Management View -->
+            <section id="users-view" class="view-section hidden w-full h-full">
+                <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col h-full">
+                    <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="relative w-full sm:w-64">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" placeholder="Search users..." class="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-dark dark:bg-dark focus:ring-2 focus:ring-primary outline-none transition-shadow text-sm">
+                        </div>
+                        <button id="add-user-btn" class="w-full sm:w-auto px-4 py-2 bg-primary text-white rounded-xl font-medium shadow-lg shadow-indigo-500/30 hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-plus"></i> Add User
+                        </button>
+                    </div>
+                    
+                    <div class="flex-1 overflow-x-auto w-full">
+                        <table class="w-full min-w-full divide-y text-white dark:divide-gray-700 dark:text-gray-200 divide-gray-200">
+                            <thead class="bg-dark dark:bg-gray-800/50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body" class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Activity Logs View -->
+            <section id="activity-view" class="view-section hidden">
+                <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-bold text-xl">System Activity Logs</h3>
+                        <button onclick="downloadActivityLogs()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium shadow-sm hover:bg-indigo-700 transition flex items-center gap-2">
+                            <i class="fas fa-download"></i> Export as CSV
+                        </button>
+                    </div>
+                    <div class="space-y-2" id="activity-feed">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Content Manager View -->
+            <section id="content-view" class="view-section hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                        <h3 class="font-bold mb-4 text-lg">Website Data Files</h3>
+                        <p class="text-sm text-gray-500 mb-6">Manage static content arrays and structure.</p>
+                        
+                        <div class="space-y-3" id="admin-custom-places-list">
+                            <!-- Custom Places populate here -->
+                            <div class="flex items-center justify-between p-3 border border-gray-100 dark:border-gray-700 rounded-xl">
+                                <p class="text-sm text-gray-500">No custom places added yet.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                        <h3 class="font-bold mb-4 text-lg">Add New Custom Place</h3>
+                        <form id="add-place-form" class="space-y-4">
+                            <div><input type="text" id="place-name" placeholder="Place Name" required class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark text-sm"></div>
+                            <div>
+                                <select id="place-category" class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark text-sm">
+                                    <option value="temples">Temples</option>
+                                    <option value="mosques">Mosques</option>
+                                    <option value="gurudwaras">Gurudwaras</option>
+                                    <option value="churches">Churches</option>
+                                    <option value="jain_temples">Jain Temples</option>
+                                    <option value="forts">Forts</option>
+                                    <option value="palaces">Palaces</option>
+                                </select>
+                            </div>
+                            <div><textarea id="place-history" placeholder="Short description..." required class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark text-sm h-20"></textarea></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="number" step="0.0001" id="place-lat" placeholder="Latitude" required class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark text-sm">
+                                <input type="number" step="0.0001" id="place-lon" placeholder="Longitude" required class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark text-sm">
+                            </div>
+                            <button type="submit" class="w-full py-2 bg-primary text-white rounded-lg font-medium hover:bg-indigo-700 transition">Publish to User Site</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings View -->
+            <section id="settings-view" class="view-section hidden">
+                <div class="max-w-3xl bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                    <h3 class="font-bold mb-6 text-xl">Portal Settings</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-medium mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">General</h4>
+                            <div class="flex items-center justify-between py-2">
+                                <div>
+                                    <p class="font-medium">Maintenance Mode</p>
+                                    <p class="text-xs text-gray-500">Disable frontend access for users.</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                  <input type="checkbox" class="sr-only peer">
+                                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-black/20 backdrop-blur-md border border-white/10 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between py-2">
+                                <div>
+                                    <p class="font-medium">Public Registrations</p>
+                                    <p class="text-xs text-gray-500">Allow new users to sign up.</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                  <input type="checkbox" class="sr-only peer" checked>
+                                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-black/20 backdrop-blur-md border border-white/10 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">Admin Account</h4>
+                            <button class="px-4 py-2 bg-gray-100 dark:bg-gray-800 font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors w-full text-left">
+                                Change Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal for Add User -->
+    <div id="user-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="bg-black/20 backdrop-blur-md border border-white/10 dark:bg-darkPanel rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+            <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="font-bold text-lg">Add New User</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="user-form" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Full Name</label>
+                    <input type="text" id="user-name" required class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Email Address</label>
+                    <input type="email" id="user-email" required class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Initial Password</label>
+                    <input type="password" id="user-password" required placeholder="••••••••" class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark outline-none focus:ring-2 focus:ring-primary">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Role</label>
+                    <select id="user-role" class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-dark dark:bg-dark outline-none focus:ring-2 focus:ring-primary">
+                        <option value="user">User</option>
+                        <option value="admin">Administrator</option>
+                        <option value="editor">Content Editor</option>
+                    </select>
+                </div>
+                <div class="pt-4 flex gap-3">
+                    <button type="submit" class="flex-1 py-2 bg-primary text-white rounded-lg font-medium hover:bg-indigo-700 transition">Save User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DB/API script loading -->
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="../animations.js" defer></script>
+</body>
+</html>

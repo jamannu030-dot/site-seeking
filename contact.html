@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Seeking - Contact Us</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Auth Guard -->
+    <script src="auth.js"></script>
+</head>
+<body>
+<!-- Dynamic Background -->
+<!-- AR/VR Motion Graphics Background -->
+<div class="video-dynamic-bg">
+    <div class="vr-grid"></div>
+    <div class="vr-orb vr-orb-1"></div>
+    <div class="vr-orb vr-orb-2"></div>
+    <div class="vr-orb vr-orb-3"></div>
+</div>
+
+    <div class="glow-orb"></div>
+</div>
+
+
+<header>
+    <div class="header-inner">
+    <div class="logo-area">
+        <h1>SITE SEEKING</h1>
+        <div class="theme-switch-wrapper" onclick="toggleTheme()" title="Toggle Theme">
+            <div class="theme-switch">
+                <i class="ph-fill ph-sun"></i>
+                <i class="ph-fill ph-moon"></i>
+                <div class="switch-handle"></div>
+            </div>
+        </div>
+    </div>
+    <div class="header-rightside">
+        
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="explore.html">Explore</a>
+            <a href="dashboard.html">Dashboard</a>
+        <!-- removed Sign In -->
+        <a href="contact.html" class="active">Contact</a>
+
+            </div>
+        </div>
+        </nav>
+    </div>
+    </div>
+</header>
+
+<div class="contact-container">
+    <div class="contact-info">
+        <h2>Get in Touch</h2>
+        <p>Have questions about a location or need help with your itinerary? Our support team is here to assist you daily.</p>
+
+        <div class="info-item">
+            <div class="info-icon"><i class="ph ph-map-pin"></i></div>
+            <div class="info-text">
+                <strong>Our Location</strong>
+                <p>123 Heritage Lane, MI Road<br>Jaipur, Rajasthan 302001</p>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <div class="info-icon"><i class="ph ph-envelope-simple"></i></div>
+            <div class="info-text">
+                <strong>Email Address</strong>
+                <p>support@siteseeking.com<br>info@siteseeking.com</p>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <div class="info-icon"><i class="ph ph-phone"></i></div>
+            <div class="info-text">
+                <strong>Phone Number</strong>
+                <p>+91 98765 43210<br>Mon-Sat, 9AM-8PM</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-form">
+        <form onsubmit="event.preventDefault(); alert('Message Sent!');">
+            <div class="form-group">
+                <label>Full Name</label>
+                <div class="input-wrapper">
+                    <i class="ph ph-user"></i>
+                    <input type="text" placeholder="John Doe" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <div class="input-wrapper">
+                    <i class="ph ph-envelope-simple"></i>
+                    <input type="email" placeholder="name@example.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Subject</label>
+                <div class="input-wrapper">
+                    <i class="ph ph-chat-circle"></i>
+                    <input type="text" placeholder="How can we help?" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Message</label>
+                <div class="input-wrapper" style="align-items: flex-start; padding-top: 15px;">
+                    <i class="ph ph-paragraph" style="top: 15px;"></i>
+                    <textarea placeholder="Write your message here..." required></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="auth-btn" style="margin-top: 5px;">Send Message</button>
+        </form>
+    </div>
+</div>
+
+    
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Site Seeking</h3>
+            <p>A curated digital journey through Jaipur's sacred shrines, majestic palaces, and hidden architectural wonders.</p>
+            <div class="social-links">
+                <a href="#"><i class="ph-fill ph-facebook-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-twitter-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-instagram-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+            </div>
+        </div>
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <!-- removed Sign In -->
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="explore.html#categories">Religious Sites</a></li>
+                <li><a href="explore.html#categories">Historical Sites</a></li>
+                <li><a href="explore.html#categories">Forgotten Sites</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Newsletter</h4>
+            <p>Subscribe for discovering new heritage sites.</p>
+            <div class="subscribe-form">
+                <input type="email" placeholder="Your Email">
+                <button><i class="ph-fill ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Site Seeking. All rights reserved.</p>
+    </div>
+</footer>
+
+    <script src="animations.js"></script>
+</body>
+</html>

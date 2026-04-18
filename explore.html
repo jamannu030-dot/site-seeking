@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - Site Seeking</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- OpenStreetMap Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Auth Guard -->
+    <script src="auth.js"></script>
+</head>
+<body>
+<!-- Dynamic Background -->
+<div class="dynamic-canvas">
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+</div>
+<!-- AR/VR Motion Graphics Background -->
+<div class="video-dynamic-bg">
+    <div class="vr-grid"></div>
+    <div class="vr-orb vr-orb-1"></div>
+    <div class="vr-orb vr-orb-2"></div>
+    <div class="vr-orb vr-orb-3"></div>
+</div>
+
+
+<header>
+    <div class="header-inner">
+    <div class="logo-area">
+        <h1 class="reveal">Site Seeking</h1>
+        <div class="theme-switch-wrapper" onclick="toggleTheme()" title="Toggle Theme">
+            <div class="theme-switch">
+                <i class="ph-fill ph-sun"></i>
+                <i class="ph-fill ph-moon"></i>
+                <div class="switch-handle"></div>
+            </div>
+        </div>
+    </div>
+    <div class="header-rightside">
+        <div class="search-container">
+            <i class="ph ph-magnifying-glass"></i>
+            <input type="text" class="global-search" placeholder="Search Jaipur..." onkeyup="handleSearch(event)">
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="explore.html" class="active">Explore</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </div>
+    </div>
+</header>
+
+<section class="hero explore-hero" style="min-height: 40vh;">
+    <div class="hero-content">
+        <h2>Unveil the Timeless Heritage</h2>
+        <p>A curated digital journey through sacred shrines, majestic palaces, and hidden architectural wonders.</p>
+    </div>
+</section>
+
+<div style="max-width: 1400px; margin: 0 auto; padding: 0 5%; width: 100%;">
+    <section id="categories" class="reveal" style="padding-top: 40px;">
+    <h2 id="category-title" style="font-family: 'Playfair Display', serif;">Explore Jaipur's Heritage</h2>
+    
+    <!-- Main Categories Grid -->
+    <div class="categories-grid" id="main-categories">
+        <div class="card" onclick="showSubCategories('religious')">
+            <div class="icon"><i class="ph-fill ph-hands-praying"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Religious Sites</h4>
+            <p>Temples, Mosques, Gurudwaras & more</p>
+        </div>
+        <div class="card" onclick="showSubCategories('historical')">
+            <div class="icon"><i class="ph-fill ph-castle-turret"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Historical Sites</h4>
+            <p>Forts, Palaces & Monuments</p>
+        </div>
+        <div class="card" onclick="loadCategory('forgotten')">
+            <div class="icon"><i class="ph-fill ph-ghost"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Forgotten Sites</h4>
+            <p>Unexplored & hidden gems of Jaipur</p>
+        </div>
+    </div>
+
+    <!-- Religious Sub-categories Grid -->
+    <div class="categories-grid sub-categories" id="religious-sub" style="display: none;">
+        <div class="subcategory-header" style="grid-column: 1/-1; display: flex; justify-content: start;">
+            <button class="btn-secondary" onclick="showMainCategories()" style="margin-bottom: 20px;">
+                <i class="ph ph-arrow-left"></i> Back to Main Categories
+            </button>
+        </div>
+        <div class="card" onclick="loadCategory('temples')">
+            <div class="icon"><i class="ph-fill ph-flower-lotus"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Temples</h4>
+            <p>Spiritual Hindu shrines & architecture</p>
+        </div>
+        <div class="card" onclick="loadCategory('mosques')">
+            <div class="icon"><i class="ph-fill ph-moon-stars"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Mosques</h4>
+            <p>Majestic Islamic heritage sites</p>
+        </div>
+        <div class="card" onclick="loadCategory('gurudwaras')">
+            <div class="icon"><i class="ph-fill ph-hands-praying"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Gurudwaras</h4>
+            <p>Peaceful Sikh community & service hubs</p>
+        </div>
+        <div class="card" onclick="loadCategory('churches')">
+            <div class="icon"><i class="ph-fill ph-church"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Churches</h4>
+            <p>Colonial-era historic Christian landmarks</p>
+        </div>
+        <div class="card" onclick="loadCategory('jain_temples')">
+            <div class="icon"><i class="ph-fill ph-flower-lotus"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Jain Temples</h4>
+            <p>Intricate marble carvings & ancient faith</p>
+        </div>
+    </div>
+
+    <!-- Historical Sub-categories Grid -->
+    <div class="categories-grid sub-categories" id="historical-sub" style="display: none;">
+        <div class="subcategory-header" style="grid-column: 1/-1; display: flex; justify-content: start;">
+            <button class="btn-secondary" onclick="showMainCategories()" style="margin-bottom: 20px;">
+                <i class="ph ph-arrow-left"></i> Back to Main Categories
+            </button>
+        </div>
+        <div class="card" onclick="loadCategory('forts')">
+            <div class="icon"><i class="ph-fill ph-castle"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Forts</h4>
+            <p>Majestic defense structures of Jaipur</p>
+        </div>
+        <div class="card" onclick="loadCategory('palaces')">
+            <div class="icon"><i class="ph-fill ph-castle-turret"></i></div>
+            <h4 style="font-family: 'Playfair Display', serif;">Palaces</h4>
+            <p>Royal residences & architectural wonders</p>
+        </div>
+    </div>
+</section>
+
+<section id="results" class="reveal"></section>
+
+<script src="places.js"></script>
+<script src="app.js"></script>
+    
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Site Seeking</h3>
+            <p>A curated digital journey through Jaipur's sacred shrines, majestic palaces, and hidden architectural wonders.</p>
+            <div class="social-links">
+                <a href="#"><i class="ph-fill ph-facebook-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-twitter-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-instagram-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+            </div>
+        </div>
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore.html">Explore</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="explore.html#categories">Religious Sites</a></li>
+                <li><a href="explore.html#categories">Historical Sites</a></li>
+                <li><a href="explore.html#categories">Forgotten Sites</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Newsletter</h4>
+            <p>Subscribe for discovering new heritage sites.</p>
+            <div class="subscribe-form">
+                <input type="email" placeholder="Your Email">
+                <button><i class="ph-fill ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Site Seeking. All rights reserved.</p>
+    </div>
+</footer>
+
+    <script src="animations.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Site Seeking - Jaipur Heritage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Site Seeking</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="login.html">Login</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Explore Jaipur's Religious Heritage</h2>
+    <p>Discover temples, mosques, gurudwaras & churches</p>
+    <button onclick="scrollToSection()">Explore</button>
+</section>
+
+<section id="categories">
+    <h2>Categories</h2>
+
+    <div class="card" onclick="loadCategory('temples')">Temples</div>
+    <div class="card" onclick="loadCategory('mosques')">Mosques</div>
+    <div class="card" onclick="loadCategory('gurudwaras')">Gurudwaras</div>
+    <div class="card" onclick="loadCategory('churches')">Churches</div>
+</section>
+
+<section id="results"></section>
+
+<script src="data/places.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

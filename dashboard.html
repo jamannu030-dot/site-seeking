@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Seeking - Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Auth Guard & Logic -->
+    <script src="auth.js"></script>
+    <script src="app.js" defer></script>
+</head>
+<body>
+<!-- Dynamic Background -->
+<div class="dynamic-canvas">
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+</div>
+<!-- Dynamic Background -->
+<!-- AR/VR Motion Graphics Background -->
+<div class="video-dynamic-bg">
+    <div class="vr-grid"></div>
+    <div class="vr-orb vr-orb-1"></div>
+    <div class="vr-orb vr-orb-2"></div>
+    <div class="vr-orb vr-orb-3"></div>
+</div>
+
+    <div class="glow-orb"></div>
+</div>
+
+
+<header>
+    <div class="header-inner">
+    <div class="logo-area">
+        <h1>SITE SEEKING</h1>
+        <div class="theme-switch-wrapper" onclick="toggleTheme()" title="Toggle Theme">
+            <div class="theme-switch">
+                <i class="ph-fill ph-sun"></i>
+                <i class="ph-fill ph-moon"></i>
+                <div class="switch-handle"></div>
+            </div>
+        </div>
+    </div>
+    <div class="header-rightside">
+        
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="explore.html">Explore</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </div>
+    </div>
+</header>
+
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-title">Main Menu</div>
+        <a href="dashboard.html" class="active"><i class="ph ph-squares-four"></i> Overview</a>
+        <a href="itinerary.html"><i class="ph ph-calendar-blank"></i> My Itinerary</a>
+        <a href="saved-places.html"><i class="ph ph-bookmark-simple"></i> Saved Places</a>
+        <a href="reviews.html"><i class="ph ph-star"></i> Reviews</a>
+
+        <div class="sidebar-title">Account</div>
+        <a href="settings.html"><i class="ph ph-gear"></i> Settings</a>
+        <a href="#" onclick="handleSignOut(event)"><i class="ph ph-sign-out"></i> Sign Out</a>
+    </aside>
+
+    <main class="dashboard-content">
+        <div class="dashboard-header">
+            <h2 id="dash-greeting" class="not-kinetic">Hey buddy!</h2>
+            <div class="user-profile-badge" onclick="window.location.href='settings.html'">
+                <div class="avatar" id="dash-avatar-letter">U</div>
+                <span id="dash-user-name">User</span>
+                <i class="ph ph-caret-down" style="color: var(--text-secondary)"></i>
+            </div>
+        </div>
+
+        <div class="stats-grid reveal">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h4>Itinerary Scheduled</h4>
+                    <i class="ph-fill ph-check-circle stat-icon"></i>
+                </div>
+                <div class="value" id="dash-itinerary-count">0</div>
+                <div style="width: 100%; height: 4px; background: var(--input-bg); margin-top: 15px; border-radius: 2px; overflow: hidden;">
+                    <div style="width: 40%; height: 100%; background: var(--accent-blue); animation: progressWidth 1.5s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h4>Saved Locations</h4>
+                    <i class="ph-fill ph-bookmark-simple stat-icon"></i>
+                </div>
+                <div class="value" id="dash-saved-count">0</div>
+                <div style="width: 100%; height: 4px; background: var(--input-bg); margin-top: 15px; border-radius: 2px; overflow: hidden;">
+                    <div style="width: 75%; height: 100%; background: var(--accent-teal); animation: progressWidth 1.5s cubic-bezier(0.16, 1, 0.3, 1); animation-delay: 0.2s;"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h4>Logins Total</h4>
+                    <i class="ph-fill ph-user stat-icon"></i>
+                </div>
+                <div class="value" id="dash-login-count">1</div>
+                <div style="width: 100%; height: 4px; background: var(--input-bg); margin-top: 15px; border-radius: 2px; overflow: hidden;">
+                    <div style="width: 100%; height: 100%; background: #FFB800; animation: progressWidth 1.5s cubic-bezier(0.16, 1, 0.3, 1); animation-delay: 0.4s;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <div class="section-header reveal" style="margin-top: 20px;">
+                <h3 style="display: flex; align-items: center; gap: 10px;"><i class="ph ph-pulse" style="color: var(--accent-teal);"></i> Recent Activity</h3>
+                <button class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem;" onclick="alert('All activities are currently displayed.')">View Archive</button>
+            </div>
+
+            <div id="dynamic-activity-feed" style="margin-top:20px; display:flex; flex-direction:column; gap:15px;">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const activeUser = localStorage.getItem('siteSeeking_active_user') || 'Wanderer';
+                document.getElementById('dash-greeting').innerText = 'Hey buddy, ' + activeUser.split(' ')[0] + '!';
+                document.getElementById('dash-user-name').innerText = activeUser;
+                document.getElementById('dash-avatar-letter').innerText = activeUser.charAt(0).toUpperCase();
+
+                const saved = JSON.parse(localStorage.getItem(`siteSeeking_${localStorage.getItem('siteSeeking_active_user') || 'guest'}_saved`) || '[]');
+                const itin = JSON.parse(localStorage.getItem(`siteSeeking_${localStorage.getItem('siteSeeking_active_user') || 'guest'}_itinerary`) || '[]');
+                const logs = JSON.parse(localStorage.getItem('admin_logs') || '[]');
+
+                document.getElementById('dash-saved-count').innerText = saved.length;
+                document.getElementById('dash-itinerary-count').innerText = itin.length;
+
+                const userLogs = logs.filter(log => log.user === activeUser);
+                document.getElementById('dash-login-count').innerText = userLogs.filter(l => l.action.includes('Logged in') || l.action.includes('Registered')).length;
+
+                const feed = document.getElementById('dynamic-activity-feed');
+                if (userLogs.length === 0) {
+                    feed.innerHTML = '<p style="color:var(--text-secondary); text-align:center; padding: 40px; background: rgba(1, 10, 28, 0.4); border: 1px dashed var(--glass-border);">No recent activity documented in the mainframe.</p>';
+                } else {
+                    userLogs.slice(0, 5).forEach((log, index) => {
+                        // determine icon based on action
+                        let iconClass = 'ph-history';
+                        let iconColor = 'var(--text-secondary)';
+                        if (log.action.includes('Saved')) { iconClass = 'ph-bookmark-simple'; iconColor = 'var(--accent-teal)'; }
+                        if (log.action.includes('Scheduled')) { iconClass = 'ph-calendar-plus'; iconColor = 'var(--accent-blue)'; }
+                        if (log.action.includes('Logged out')) { iconClass = 'ph-sign-out'; iconColor = '#ef4444'; }
+                        if (log.action.includes('Logged in')) { iconClass = 'ph-sign-in'; iconColor = '#10b981'; }
+
+                        const timeStr = new Date(log.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+                        feed.innerHTML += `
+                        <div class="activity-item" style="animation: fadeInSlideUp 0.5s ease-out forwards; animation-delay: ${0.1 * index}s; opacity: 0;">
+                            <div class="activity-content">
+                                <div class="activity-icon" style="color: ${iconColor};"><i class="ph-fill ${iconClass}"></i></div>
+                                <div class="activity-text">
+                                    <span style="font-weight: 500;">${log.action}</span>
+                                </div>
+                            </div>
+                            <span class="activity-time" style="font-family: 'Montserrat', sans-serif; opacity: 0.7;">${timeStr}</span>
+                        </div>
+                        `;
+                    });
+                }
+            });
+        </script>
+        <style>
+            @keyframes progressWidth {
+                0% { width: 0; }
+            }
+        </style>
+    </main>
+</div>
+
+    
+<script src="app.js"></script>
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Site Seeking</h3>
+            <p>A curated digital journey through Jaipur's sacred shrines, majestic palaces, and hidden architectural wonders.</p>
+            <div class="social-links">
+                <a href="#"><i class="ph-fill ph-facebook-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-twitter-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-instagram-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+            </div>
+        </div>
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <!-- removed Sign In -->
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="explore.html#categories">Religious Sites</a></li>
+                <li><a href="explore.html#categories">Historical Sites</a></li>
+                <li><a href="explore.html#categories">Forgotten Sites</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Newsletter</h4>
+            <p>Subscribe for discovering new heritage sites.</p>
+            <div class="subscribe-form">
+                <input type="email" placeholder="Your Email">
+                <button><i class="ph-fill ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Site Seeking. All rights reserved.</p>
+    </div>
+</footer>
+
+    <script src="animations.js"></script>
+</body>
+</html>

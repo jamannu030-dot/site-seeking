@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Seeking - My Itinerary</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Auth Guard & Logic -->
+    <script src="auth.js"></script>
+    <script src="app.js" defer></script>
+</head>
+<body>
+<!-- Dynamic Background -->
+<div class="dynamic-canvas">
+    <div class="glow-orb"></div>
+    <div class="glow-orb"></div>
+</div>
+<!-- Dynamic Background -->
+<!-- AR/VR Motion Graphics Background -->
+<div class="video-dynamic-bg">
+    <div class="vr-grid"></div>
+    <div class="vr-orb vr-orb-1"></div>
+    <div class="vr-orb vr-orb-2"></div>
+    <div class="vr-orb vr-orb-3"></div>
+</div>
+
+    <div class="glow-orb"></div>
+</div>
+
+
+<header>
+    <div class="header-inner">
+    <div class="logo-area">
+        <h1>SITE SEEKING</h1>
+        <div class="theme-switch-wrapper" onclick="toggleTheme()" title="Toggle Theme">
+            <div class="theme-switch">
+                <i class="ph-fill ph-sun"></i>
+                <i class="ph-fill ph-moon"></i>
+                <div class="switch-handle"></div>
+            </div>
+        </div>
+    </div>
+    <div class="header-rightside">
+        
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="explore.html">Explore</a>
+            <a href="dashboard.html">Dashboard</a>
+        <!-- removed Sign In -->
+        <a href="contact.html">Contact</a>
+
+            </div>
+        </div>
+        </nav>
+    </div>
+    </div>
+</header>
+
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-title">Main Menu</div>
+        <a href="dashboard.html"><i class="ph ph-squares-four"></i> Overview</a>
+        <a href="itinerary.html" class="active"><i class="ph ph-calendar-blank"></i> My Itinerary</a>
+        <a href="saved-places.html"><i class="ph ph-bookmark-simple"></i> Saved Places</a>
+        <a href="reviews.html"><i class="ph ph-star"></i> Reviews</a>
+
+        <div class="sidebar-title">Account</div>
+        <a href="settings.html"><i class="ph ph-gear"></i> Settings</a>
+        <a href="#" onclick="handleSignOut(event)"><i class="ph ph-sign-out"></i> Sign Out</a>
+    </aside>
+
+    <main class="dashboard-content">
+        <div class="dashboard-header">
+            <h2>Trip Itinerary</h2>
+            <button class="btn-primary" style="padding: 12px 25px;"><i class="ph ph-plus"></i> Add Plan</button>
+        </div>
+
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3>Upcoming: Weekend at Jaipur</h3>
+                <span style="color: var(--accent-teal); font-weight: 600;">Oct 12 - Oct 14</span>
+            </div>
+
+            <div class="item-grid itinerary-grid" id="itinerary-grid">
+                <!-- Mapped via JS -->
+            </div>
+
+            <script>
+                window.renderItinerary = function() {
+                    const grid = document.getElementById('itinerary-grid');
+                    if(!grid) return;
+
+                    const itin = JSON.parse(localStorage.getItem(`siteSeeking_${localStorage.getItem('siteSeeking_active_user') || 'guest'}_itinerary`) || '[]');
+                    grid.innerHTML = '';
+
+                    if (itin.length === 0) {
+                        grid.innerHTML = '<p style="color:var(--text-secondary); width: 100%;">Your itinerary is empty. Go find some heritage sites!</p>';
+                        return;
+                    }
+
+                    itin.forEach((placeName, index) => {
+                        grid.innerHTML += `
+                        <div class="item-card">
+                            <div class="item-content">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 5px;">
+                                    <div style="font-size: 0.85rem; color: var(--accent-blue); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Stop ${index + 1}</div>
+                                    <button class="btn-icon" style="color: #ef4444;" onclick="removeItinerary('${placeName.replace(/'/g, "\\'")}')" title="Remove"><i class="ph ph-trash"></i></button>
+                                </div>
+                                <h4 class="item-title">${placeName}</h4>
+                                <p class="item-desc">Scheduled for your trip exploration.</p>
+                                <button class="btn-secondary" style="width: 100%; justify-content: center; margin-top: 15px;"><i class="ph ph-map-pin"></i> Navigate</button>
+                            </div>
+                        </div>`;
+                    });
+                };
+                document.addEventListener('DOMContentLoaded', renderItinerary);
+            </script>
+        </div>
+    </main>
+</div>
+
+    
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Site Seeking</h3>
+            <p>A curated digital journey through Jaipur's sacred shrines, majestic palaces, and hidden architectural wonders.</p>
+            <div class="social-links">
+                <a href="#"><i class="ph-fill ph-facebook-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-twitter-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-instagram-logo"></i></a>
+                <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+            </div>
+        </div>
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <!-- removed Sign In -->
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="explore.html#categories">Religious Sites</a></li>
+                <li><a href="explore.html#categories">Historical Sites</a></li>
+                <li><a href="explore.html#categories">Forgotten Sites</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Newsletter</h4>
+            <p>Subscribe for discovering new heritage sites.</p>
+            <div class="subscribe-form">
+                <input type="email" placeholder="Your Email">
+                <button><i class="ph-fill ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Site Seeking. All rights reserved.</p>
+    </div>
+</footer>
+
+    <script src="animations.js"></script>
+</body>
+</html>

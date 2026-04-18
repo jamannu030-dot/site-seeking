@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Site Seeking</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Auth Guard -->
+    <script src="auth.js"></script>
+</head>
+
+<body class="u-bg-deep">
+    <!-- Dynamic Heritage Photo Background will be injected via animations.js -->
+
+    <header>
+        <div class="header-inner">
+            <div class="logo-area">
+                <h1 class="u-brand-text u-fs-small">Site Seeking</h1>
+                <div class="theme-switch-wrapper" onclick="toggleTheme()" title="Toggle Theme">
+                    <div class="theme-switch">
+                        <i class="ph-fill ph-sun"></i>
+                        <i class="ph-fill ph-moon"></i>
+                    </div>
+                </div>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="explore.html">Explore</a>
+                <a href="login.html">Sign In</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="auth-wrapper">
+        <div class="auth-container">
+            <div class="glass-card-advanced auth-box reveal active u-max-w-500">
+                <!-- HUD Decor -->
+                <div class="hud-corner hud-tl"></div>
+                <div class="hud-corner hud-tr"></div>
+                <div class="hud-corner hud-bl"></div>
+                <div class="hud-corner hud-br"></div>
+                <div class="glow-line glow-t"></div>
+                <div class="scan-line"></div>
+
+                <div class="auth-header-brand">
+                    <div class="auth-logo-circle">
+                        <i class="ph-fill ph-compass"></i>
+                    </div>
+                    <h1 class="u-brand-text">Join the Journey</h1>
+                    <p class="u-text-secondary u-mt-10 u-font-sm">Begin your digital pilgrimage through Jaipur</p>
+                </div>
+
+                <form onsubmit="handleRegisterSubmit(event)">
+                    <div class="u-flex u-gap-15">
+                        <div class="form-group u-flex-1">
+                            <label class="u-font-xs u-text-secondary u-mb-5 u-display-block">FIRST NAME</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-user"></i>
+                                <input type="text" placeholder="John" required class="u-input-premium">
+                            </div>
+                        </div>
+                        <div class="form-group u-flex-1">
+                            <label class="u-font-xs u-text-secondary u-mb-5 u-display-block">LAST NAME</label>
+                            <div class="input-wrapper">
+                                <i class="ph ph-user"></i>
+                                <input type="text" placeholder="Doe" required class="u-input-premium">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="u-font-xs u-text-secondary u-mb-5 u-display-block">EMAIL ADDRESS</label>
+                        <div class="input-wrapper">
+                            <i class="ph ph-envelope-simple"></i>
+                            <input type="email" placeholder="name@example.com" required class="u-input-premium">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="u-font-xs u-text-secondary u-mb-5 u-display-block">CHOOSE PASSWORD</label>
+                        <div class="input-wrapper">
+                            <i class="ph ph-lock-key"></i>
+                            <input type="password" placeholder="••••••••" required minlength="6" class="u-input-premium">
+                        </div>
+                    </div>
+
+                    <div class="u-mb-20">
+                        <label class="u-font-xs u-text-secondary u-flex u-items-center u-gap-10 u-cursor-pointer">
+                            <input type="checkbox" required class="u-w-auto u-m-0">
+                            <span>I agree to the <a href="#" class="u-accent-teal">Heritage Access Protocols</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="auth-btn-futuristic">Initialize Account</button>
+
+                    <div class="social-divider">
+                        <hr><span>OR QUICK REGISTER</span><hr>
+                    </div>
+
+                    <div class="social-buttons">
+                        <button type="button" class="btn-secondary btn-social-auth-custom" onclick="handleSocialLogin('Gmail')">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo" class="social-icon-img"> Continue with Google
+                        </button>
+                        <button type="button" class="btn-secondary btn-social-auth-custom" onclick="handleSocialLogin('Phone')">
+                            <i class="ph-fill ph-device-mobile social-icon-font"></i> Continue with number
+                        </button>
+                    </div>
+                </form>
+
+                <p class="u-text-center u-mt-40 u-font-sm u-text-secondary">
+                    Already a seeker? <a href="login.html" class="u-accent-teal u-font-bold u-no-decor">Sign In Now</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Site Seeking</h3>
+                <p>A curated digital journey through Jaipur's sacred shrines and hidden architectural wonders.</p>
+            </div>
+            <div class="footer-section">
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="ph-fill ph-facebook-logo"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="ph-fill ph-twitter-logo"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="ph-fill ph-instagram-logo"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Site Seeking. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="animations.js"></script>
+</body>
+
+</html>
