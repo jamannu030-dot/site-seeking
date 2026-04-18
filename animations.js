@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         video.style.zIndex = '-999';
         video.style.transform = 'translate(-50%, -50%)';
         video.style.objectFit = 'cover';
-        video.style.opacity = '0.15'; // Very subtle to emulate high-end AR/VR without distracting text
+        // Opacity is now managed in styles.css for theme transitions
         video.style.pointerEvents = 'none';
         
         document.body.prepend(video);

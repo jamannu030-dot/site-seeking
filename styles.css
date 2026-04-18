@@ -251,6 +251,20 @@ body {
     overflow: hidden;
     opacity: 0.2; /* Subtly visible */
     pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+[data-theme='light'] .dynamic-photo-bg {
+    opacity: 0.08; /* Less opacity in sunlight/light mode for better readability */
+}
+
+.global-video-bg {
+    opacity: 0.15;
+    transition: opacity 0.5s ease;
+}
+
+[data-theme='light'] .global-video-bg {
+    opacity: 0.05; /* Dim video background in light mode */
 }
 
 /* Continuously Scrolling Grid Containers */
