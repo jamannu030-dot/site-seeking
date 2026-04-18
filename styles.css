@@ -41,9 +41,9 @@
 
 .logo-area {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 5px;
 }
 
 /* Crazy Dynamic 3D Theme Switch */
